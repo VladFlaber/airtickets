@@ -1,9 +1,16 @@
 const express =require("express")
 const config = require("config")
 const mongoose = require("mongoose")
-const app =express();
+const bodyParser = require('body-parser')
 
-app.use("/api/auth",require("./routes/auth.routes"))
+
+const app =express();
+app.use(express.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use("/api/auth",require("./routes/auth.routes"));
+app.use("/api/airtickets",require("./routes/Airticket.routes"));
 
 
 const PORT=config.get('port')||5000
@@ -15,7 +22,7 @@ async  function start(){
             useUnifiedTopology:true,
 
         })
-        app.listen(PORT,()=>console.log(`app has been started ${PORT}`));
+        app.listen(PORT,()=>console.log(`app has been started at port ${PORT} ...`));
     }
     catch (e){
         console.log("SERVER error" , e.message);
